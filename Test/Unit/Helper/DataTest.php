@@ -79,6 +79,26 @@ class DataTest extends TestCase
         $this->assertSame(['script-src' => ['hosts' => ['*.keep.example']]], $result);
     }
 
+    public function testWhitelistedHostsAreDeduplicatedPerDirective(): void
+    {
+        // A repeated host within one directive must be emitted only once, so the
+        // resulting policy never carries duplicate sources.
+        $rows = json_encode([
+            ['dropdown_field' => 'script-src', 'text_field' => '*.google.com'],
+            ['dropdown_field' => 'script-src', 'text_field' => '*.google.com'],
+            ['dropdown_field' => 'script-src', 'text_field' => '*.bing.com'],
+        ]);
+
+        $result = $this->helper([
+            'csp/whitelist/csp_script_group/script_src' => $rows,
+        ])->getWhitelistedHosts('csp/whitelist');
+
+        $this->assertSame(
+            ['script-src' => ['hosts' => ['*.google.com', '*.bing.com']]],
+            $result
+        );
+    }
+
     public function testDefaultValuesAreHostsTimesPolicies(): void
     {
         $defaults = $this->helper([])->getDefaultValues();
