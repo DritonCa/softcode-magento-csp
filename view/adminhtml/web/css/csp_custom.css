@@ -1,0 +1,8 @@
+#softcode_configuration_csp_script_group #softcode_configuration_csp_script_group_script_src thead{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+#softcode_configuration_csp_script_group #softcode_configuration_csp_script_group_script_src tbody{
+    display: inherit;
+}

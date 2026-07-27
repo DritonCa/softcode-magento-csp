@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp/etc/csp_whitelist.xsd">
+    <policies>
+        <!--<policy id="connect-src">
+        <values>
+            <value id="google-analytics" type="host">www.google-analytics.com</value>
+            <value id="google-a" type="host">*.google-analytics.com</value>
+            <value id="googleadservices" type="host">www.googleadservices.com</value>
+            <value id="cloudflare" type="host">*.cloudflare.com</value>
+            <value id="twitter.com" type="host">*.twitter.com</value>
+            <value id="paypal" type="host">*.paypal.com</value>
+            <value id="twimg" type="host">*.twimg.com</value>
+            <value id="zdassets" type="host">*.zdassets.com</value>
+            <value id="zopim" type="host">*.zopim.com</value>
+            <value id="zopimio" type="host">*.zopim.io</value>
+            <value id="mediator" type="host">wss://widget-mediator.zopim.com</value>
+            <value id="googleanalytics" type="host">*.google-analytics.com</value>
+            <value id="doubleclick" type="host">https://stats.g.doubleclick.net</value>
+            <value id="bambora" type="host">*.bambora.com</value>
+            <value id="cookieinformation" type="host">www.policy.app.cookieinformation.com</value>
+            <value id="googletagmanager" type="host">*.googletagmanager.com</value>
+            <value id="googletagmanage" type="host">www.googletagmanager.com</value>
+            <value id="mopinion" type="host">https://deploy.mopinion.com</value>
+            <value id="analytic" type="host">https://analytics.google.com</value>
+            <value id="consent" type="host">https://consent.app.cookieinformation.com</value>
+            <value id="bamboraconnect" type="host">*.bambora.com</value>
+        </values>
+        </policy>
+        <policy id="script-src">
+            <values>
+                <value id="googleadservice" type="host">www.googleadservices.com</value>
+                <value id="cloudflare" type="host">*.cloudflare.com</value>
+                <value id="twitter.com" type="host">*.twitter.com</value>
+                <value id="google-analytics" type="host">*.google-analytics.com</value>
+                <value id="twimg" type="host">*.twimg.com</value>
+                <value id="gstatic" type="host">*.gstatic.com</value>
+                <value id="trustedshops" type="host">*.trustedshops.com</value>
+                <value id="usercentrics" type="host">*.usercentrics.eu</value>
+                <value id="fontawesome" type="host">*.fontawesome.com</value>
+                <value id="bing" type="host">*.bing.com</value>
+                <value id="zopim" type="host">*.zopim.com</value>
+                <value id="zdassets" type="host">*.zdassets.com</value>
+                <value id="google" type="host">*.google.com</value>
+                <value id="bamborapay" type="host">*.bambora.com</value>
+                <value id="cookieinformationcom" type="host">www.policy.app.cookieinformation.com</value>
+                <value id="googletag" type="host">*.googletagmanager.com</value>
+                <value id="mopinion2" type="host">https://deploy.mopinion.com</value>
+                <value id="bambora2" type="host">*.bambora.com</value>
+                <value id="youtube" type="host">https://www.youtube.com</value>
+                <value id="youtubeapi" type="host">*.youtube.com</value>
+            </values>
+        </policy>
+        <policy id="style-src">
+            <values>
+                <value id="gstatic" type="host">https://www.gstatic.com</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="adobedtm2" type="host">www.assets.adobedtm.com</value>
+                <value id="omtrdc2" type="host">www.amcglobal.sc.omtrdc.net</value>
+                <value id="demdex2" type="host">www.dpm.demdex.net</value>
+                <value id="everesttech2" type="host">www.cm.everesttech.net</value>
+                <value id="magentocommerce2" type="host">www.widgets.magentocommerce.com</value>
+                <value id="ftcdn2" type="host">*.ftcdn.net</value>
+                <value id="behance2" type="host">*.behance.net</value>
+                <value id="paypal2" type="host">fpdbs.paypal.com</value>
+                <value id="sandbox2" type="host">fpdbs.sandbox.paypal.com</value>
+                <value id="vimeocdn2" type="host">*.vimeocdn.com</value>
+                <value id="ytimg2" type="host">s.ytimg.com</value>
+                <value id="google2" type="host">*.google.com</value>
+                <value id="googlebg2" type="host">*.google.bg</value>
+                <value id="facebook2" type="host">*.facebook.com</value>
+                <value id="facebooknet2" type="host">*.facebook.net</value>
+                <value id="doubleclick2" type="host">*.doubleclick.net</value>
+                <value id="doubleclick2" type="host">*.doubleclick.net</value>
+                <value id="sonosep" type="host">https://sonosep.web95.hostingpool.net</value>
+                <value id="sononop" type="host">https://sononop.web95.hostingpool.net</value>
+                <value id="sonodkp" type="host">https://sonodkp.web95.hostingpool.net</value>
+                <value id="sonono" type="host">https://shop.sonono.web95.hostingpool.net</value>
+                <value id="sonose" type="host">https://shop.sonose.web95.hostingpool.net</value>
+                <value id="sonodk" type="host">https://shop.sonodk.web95.hostingpool.net</value>
+                <value id="googleimage" type="host">https://www.google.dk</value>
+                <value id="sonoselive" type="host">https://www.sono.se</value>
+                <value id="bing" type="host">https://bat.bing.com</value>
+                <value id="zopimimage" type="host">https://v2.zopim.com</value>
+            </values>
+        </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="bambora" type="host">https://v1.checkout.bambora.com</value>
+            </values>
+        </policy>-->
+    </policies>
+</csp_whitelist>

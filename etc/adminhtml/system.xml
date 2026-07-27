@@ -1,0 +1,29 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="softcode" translate="label" sortOrder="15">
+            <label><![CDATA[softcode]]></label>
+        </tab>
+        <section id="softcode_general_settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>CSP</label>
+            <tab>softcode</tab> <!-- Corrected this line -->
+            <resource>Softcode_CspWhitelist::config</resource>
+            <group id="csp_script_group" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Csp Whitelisting</label>
+                <field id="enable" translate="label" sortOrder="1" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="script_src" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>CSP whitelist</label>
+                    <backend_model>Softcode\CspWhitelist\Config\Backend\ArraySerialized</backend_model>
+                    <frontend_model>Softcode\CspWhitelist\Block\Adminhtml\Config\Form\Field\DynamicFields</frontend_model>
+                    <depends>
+                        <field id="softcode_general_settings/csp_script_group/enable">1</field>
+                    </depends>
+                </field>
+            </group>
+            <!-- Dynamic Fields System Configuration -->
+        </section>
+    </system>
+</config>
