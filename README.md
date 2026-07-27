@@ -34,6 +34,11 @@ Or copy to `app/code/Softcode/CspWhitelist` and run the same commands.
 2. Add rows of *directive* (e.g. `script-src`) + *host* (e.g. `*.google.com`).
    A one-click button seeds common third-party hosts to start from.
 
+Every host is **validated and canonicalised when you save**. An entry that is not a
+safe host-source (a bare `*`, a `data:`/`javascript:` scheme, a keyword like
+`'unsafe-inline'`, a path, or a malformed host) aborts the save with a message
+naming the offending value — see [Security & validation](#security--validation).
+
 ---
 
 ## How it works
@@ -51,6 +56,25 @@ the feature is enabled it reads the admin rows via `Helper\Data`, groups the hos
 by directive, and appends a `FetchPolicy` for each — so nothing overrides the
 built-in policy, it only adds to it.
 
+## Security & validation
+
+Because a CSP whitelist is a browser-security control, input is validated **on save**
+by `Config\Backend\ArraySerialized`, which delegates to `Model\HostValidator`:
+
+- **Accepted:** `[scheme://] host [:port]` where the scheme (optional) is one of
+  `https`/`http`/`wss`/`ws`, and the host is a domain — optionally with a single
+  leading `*.` wildcard label (`*.example.com`) — or `localhost`.
+- **Rejected, with a reason:** a bare `*`, a wildcard on a bare TLD (`*.com`) or
+  anywhere but the leading label, other schemes (`data:`, `javascript:`, `ftp:` …),
+  keyword sources (`'self'`, `'unsafe-inline'`, nonces, hashes), paths/queries, and
+  malformed hosts. Only the seven directives in the dropdown are allowed.
+- Hosts are **canonicalised** (trimmed, lower-cased, trailing `/` removed) and
+  **deduplicated** per directive — on save and again when the policy is built.
+
+Access to the configuration section is guarded by the ACL resource
+`Softcode_CspWhitelist::config` (`etc/acl.xml`). See [SECURITY.md](SECURITY.md) for
+the full threat model and the accept/reject table.
+
 ## Testing
 
 `Helper\Data` turns the serialized admin field into grouped, per-directive hosts and
@@ -62,9 +86,10 @@ vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist \
   app/code/Softcode/CspWhitelist/Test/Unit
 ```
 
-`DataTest` covers invalid/empty JSON returning no hosts, hosts being grouped by
-directive, rows with a missing directive or host being skipped, and the default
-seed being every host × every policy.
+- `HostValidatorTest` — the accept/reject/canonicalise rules and per-directive
+  deduplication (the security core).
+- `DataTest` — invalid/empty JSON returning no hosts, grouping by directive,
+  skipping incomplete rows, read-side deduplication, and the default seed.
 
 ## What CI checks
 
@@ -75,8 +100,11 @@ shown above.
 
 ## Known limitations
 
-- Hosts are validated as free text; enter them in CSP source form (`*.example.com`).
-- The feature is store-scope aware but does not deduplicate identical hosts.
+- Wildcards are restricted to a single leading label (`*.example.com`), but the
+  validator does not consult the Public Suffix List, so `*.example.co.uk` is
+  accepted. Grant admin access only to trusted roles.
+- Hosts are appended to the collected policy; the module does not remove hosts that
+  Magento or other modules already whitelist.
 
 ## License
 

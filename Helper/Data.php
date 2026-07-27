@@ -38,7 +38,17 @@ class Data extends AbstractHelper
             if (empty($row['dropdown_field']) || empty($row['text_field'])) {
                 continue;
             }
-            $result[$row['dropdown_field']]['hosts'][] = $row['text_field'];
+
+            $directive = $row['dropdown_field'];
+            $host = $row['text_field'];
+
+            // Deduplicate per directive so a repeated host is never emitted twice
+            // into the policy (defence in depth; the backend model already dedupes
+            // on save).
+            $existing = $result[$directive]['hosts'] ?? [];
+            if (!in_array($host, $existing, true)) {
+                $result[$directive]['hosts'][] = $host;
+            }
         }
 
         return $result;

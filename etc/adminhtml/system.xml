@@ -6,7 +6,7 @@
         <section id="softcode_general_settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>CSP</label>
-            <tab>softcode</tab> <!-- Corrected this line -->
+            <tab>softcode</tab>
             <resource>Softcode_CspWhitelist::config</resource>
             <group id="csp_script_group" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Csp Whitelisting</label>
@@ -23,7 +23,6 @@
                     </depends>
                 </field>
             </group>
-            <!-- Dynamic Fields System Configuration -->
         </section>
     </system>
 </config>
