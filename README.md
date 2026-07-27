@@ -51,11 +51,27 @@ the feature is enabled it reads the admin rows via `Helper\Data`, groups the hos
 by directive, and appends a `FetchPolicy` for each — so nothing overrides the
 built-in policy, it only adds to it.
 
+## Testing
+
+`Helper\Data` turns the serialized admin field into grouped, per-directive hosts and
+generates the default seed values, so it has a unit test that specifies that parsing:
+
+```bash
+# from a Magento install with the module in app/code/Softcode/CspWhitelist
+vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist \
+  app/code/Softcode/CspWhitelist/Test/Unit
+```
+
+`DataTest` covers invalid/empty JSON returning no hosts, hosts being grouped by
+directive, rows with a missing directive or host being skipped, and the default
+seed being every host × every policy.
+
 ## What CI checks
 
 GitHub Actions runs on every push/PR and **fails the build** on PHP syntax errors
-and Magento 2 coding-standard errors. It does not run integration tests (those need
-a Magento install).
+and Magento 2 coding-standard errors (`phpcs --standard=Magento2 -n`). It does not
+run the unit tests (those need a Magento framework install); run them locally as
+shown above.
 
 ## Known limitations
 
