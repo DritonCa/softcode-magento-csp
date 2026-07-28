@@ -79,13 +79,12 @@ the full threat model and the accept/reject table.
 
 ## Testing
 
-`Helper\Data` turns the serialized admin field into grouped, per-directive hosts and
-generates the default seed values, so it has a unit test that specifies that parsing:
+The unit tests are pure logic and **run without a Magento install** — a small
+`Test/bootstrap.php` autoloads the module and stubs the few Magento contracts the
+tests mock (skipped automatically inside a real Magento install):
 
 ```bash
-# from a Magento install with the module in app/code/Softcode/CspWhitelist
-vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist \
-  app/code/Softcode/CspWhitelist/Test/Unit
+phpunit -c phpunit.xml.dist
 ```
 
 - `HostValidatorTest` — the accept/reject/canonicalise rules and per-directive
@@ -95,10 +94,11 @@ vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist \
 
 ## What CI checks
 
-GitHub Actions runs on every push/PR and **fails the build** on PHP syntax errors
-and Magento 2 coding-standard errors (`phpcs --standard=Magento2 -n`). It does not
-run the unit tests (those need a Magento framework install); run them locally as
-shown above.
+GitHub Actions runs on every push/PR and **fails the build** on:
+
+- PHP syntax errors and Magento 2 coding-standard errors (`phpcs --standard=Magento2 -n`).
+- **Unit-test failures** — `phpunit -c phpunit.xml.dist` runs the suite above on
+  every push, as a real gate.
 
 ## Known limitations
 

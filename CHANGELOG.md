@@ -1,6 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- **Unit tests now run in CI** as a real gate. A standalone `Test/bootstrap.php`
+  autoloads the module and stubs the few mocked Magento contracts, so
+  `phpunit -c phpunit.xml.dist` runs the suite without a Magento install.
+
 ### Security
 - **No auto-seeded default hosts.** Removed `Helper\Data::getDefaultValues()` and the
   "seed on empty grid" behaviour in `ArraySerialized`. A security module must not
