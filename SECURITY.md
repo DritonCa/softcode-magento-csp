@@ -36,7 +36,7 @@ Entries must be **host-sources** in this shape (`Model\HostValidator`):
 
 | Part | Rule |
 | --- | --- |
-| scheme (optional) | `https`, `http`, `wss`, `ws` only |
+| scheme (optional) | `https` or `wss` only — insecure `http`/`ws` are rejected (a bare host still matches the page's own scheme) |
 | host | a domain (`example.com`, `sub.example.com`), optionally a single leading `*.` wildcard label (`*.example.com`); `localhost` allowed |
 | port (optional) | numeric |
 
@@ -52,6 +52,7 @@ Hosts are **canonicalised** (trimmed, lower-cased, a trailing `/` removed) and
 | `*.com`, `*.co.uk` | wildcard on a public suffix — too broad |
 | `a.*.com` | wildcard is only valid as the leading label |
 | `data:…`, `blob:…`, `javascript:…`, `ftp://…` | scheme sources / disallowed schemes can weaken script policy |
+| `http://…`, `ws://…` | insecure schemes — use `https`/`wss`, or a bare host that follows the page scheme |
 | `'self'`, `'unsafe-inline'`, nonces, hashes | keyword sources are not hosts and can disable protections |
 | `example.com/path`, `example.com?x=1` | a whitelist stores hosts, not URLs |
 | `host name.com`, `-bad.example.com` | malformed host |
@@ -71,6 +72,8 @@ the whitelist.
 
 - The shipped `etc/csp_whitelist.xml` contains **no** hosts by design — no
   environment- or customer-specific data is committed. Manage hosts in the admin.
+- The module **never seeds hosts on its own**: an empty grid stores an empty
+  policy. It will not silently broaden the CSP with example wildcards.
 - The validator restricts wildcards to a single leading label but does not consult
   the Public Suffix List, so `*.example.co.uk` is accepted. Grant admin access only
   to trusted roles.

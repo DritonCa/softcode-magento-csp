@@ -14,7 +14,7 @@ namespace Softcode\CspWhitelist\Model;
  * saves rather than shipped to the browser.
  *
  * Accepted host-source form: `[scheme://] host [:port]`
- *  - scheme (optional): https, http, wss, ws
+ *  - scheme (optional): https or wss (insecure http/ws are rejected)
  *  - host: a domain such as `example.com` or `sub.example.com`, optionally with a
  *    single leading `*.` wildcard label (`*.example.com`); `localhost` is allowed
  *  - port (optional): numeric
@@ -39,7 +39,9 @@ class HostValidator
         'form-action',
     ];
 
-    private const ALLOWED_SCHEMES = ['https', 'http', 'wss', 'ws'];
+    // Only secure schemes. A bare host (no scheme) is still allowed and matches the
+    // page's own scheme, so this does not block hosts served over plain HTTP.
+    private const ALLOWED_SCHEMES = ['https', 'wss'];
 
     public function isAllowedDirective(string $directive): bool
     {
@@ -75,7 +77,7 @@ class HostValidator
             $rest = $matches[2];
             if (!in_array($scheme, self::ALLOWED_SCHEMES, true)) {
                 throw new \InvalidArgumentException(
-                    sprintf('scheme "%s://" is not allowed; use https/http/wss/ws or a bare host', $scheme)
+                    sprintf('scheme "%s://" is not allowed; use https, wss, or a bare host', $scheme)
                 );
             }
         } elseif (preg_match('#^[a-z][a-z0-9+.\-]*:(?!\d)#', $value)) {

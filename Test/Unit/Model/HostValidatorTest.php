@@ -64,6 +64,8 @@ class HostValidatorTest extends TestCase
             'data scheme'           => ['data:image/png'],
             'javascript scheme'     => ['javascript:alert(1)'],
             'disallowed scheme'     => ['ftp://example.com'],
+            'insecure http scheme'  => ['http://example.com'],
+            'insecure ws scheme'    => ['ws://example.com'],
             'internal space'        => ['exa mple.com'],
             'has path'              => ['example.com/some/path'],
             'has query'             => ['example.com?a=1'],

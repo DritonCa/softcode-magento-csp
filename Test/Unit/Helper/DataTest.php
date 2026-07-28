@@ -99,24 +99,6 @@ class DataTest extends TestCase
         );
     }
 
-    public function testDefaultValuesAreHostsTimesPolicies(): void
-    {
-        $defaults = $this->helper([])->getDefaultValues();
-
-        // 4 hosts × 7 policies
-        $this->assertCount(28, $defaults);
-
-        $first = $defaults['_default_01'];
-        $this->assertSame('script-src', $first['dropdown_field']);
-        $this->assertSame('*.google.com', $first['text_field']);
-
-        foreach ($defaults as $key => $row) {
-            $this->assertStringStartsWith('_default_', $key);
-            $this->assertArrayHasKey('dropdown_field', $row);
-            $this->assertArrayHasKey('text_field', $row);
-        }
-    }
-
     public function testIsEnabledReadsTheFlag(): void
     {
         $helper = $this->helper(['csp/whitelist/enabled' => true]);

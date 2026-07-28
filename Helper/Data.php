@@ -53,29 +53,4 @@ class Data extends AbstractHelper
 
         return $result;
     }
-
-    /**
-     * Seed values offered when the admin first opens the whitelist grid:
-     * common third-party hosts across the CSP policies.
-     *
-     * @return array<string, array{dropdown_field: string, text_field: string}>
-     */
-    public function getDefaultValues(): array
-    {
-        $hosts = ['*.google.com', '*.facebook.com', '*.yotpo.com', '*.adobe.com'];
-        $policies = ['script-src', 'style-src', 'img-src', 'connect-src', 'font-src', 'frame-src', 'form-action'];
-
-        $values = [];
-        $index = 0;
-        foreach ($hosts as $host) {
-            foreach ($policies as $policy) {
-                $values['_default_' . sprintf('%02d', ++$index)] = [
-                    'dropdown_field' => $policy,
-                    'text_field' => $host,
-                ];
-            }
-        }
-
-        return $values;
-    }
 }

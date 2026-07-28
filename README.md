@@ -32,7 +32,8 @@ Or copy to `app/code/Softcode/CspWhitelist` and run the same commands.
 
 1. **Enable** the feature.
 2. Add rows of *directive* (e.g. `script-src`) + *host* (e.g. `*.google.com`).
-   A one-click button seeds common third-party hosts to start from.
+   The grid starts empty — the module never seeds hosts on your behalf, so you only
+   ever allow what you explicitly add.
 
 Every host is **validated and canonicalised when you save**. An entry that is not a
 safe host-source (a bare `*`, a `data:`/`javascript:` scheme, a keyword like
@@ -61,13 +62,14 @@ built-in policy, it only adds to it.
 Because a CSP whitelist is a browser-security control, input is validated **on save**
 by `Config\Backend\ArraySerialized`, which delegates to `Model\HostValidator`:
 
-- **Accepted:** `[scheme://] host [:port]` where the scheme (optional) is one of
-  `https`/`http`/`wss`/`ws`, and the host is a domain — optionally with a single
-  leading `*.` wildcard label (`*.example.com`) — or `localhost`.
+- **Accepted:** `[scheme://] host [:port]` where the scheme (optional) is `https` or
+  `wss`, and the host is a domain — optionally with a single leading `*.` wildcard
+  label (`*.example.com`) — or `localhost`.
 - **Rejected, with a reason:** a bare `*`, a wildcard on a bare TLD (`*.com`) or
-  anywhere but the leading label, other schemes (`data:`, `javascript:`, `ftp:` …),
-  keyword sources (`'self'`, `'unsafe-inline'`, nonces, hashes), paths/queries, and
-  malformed hosts. Only the seven directives in the dropdown are allowed.
+  anywhere but the leading label, insecure (`http:`/`ws:`) and other schemes
+  (`data:`, `javascript:`, `ftp:` …), keyword sources (`'self'`, `'unsafe-inline'`,
+  nonces, hashes), paths/queries, and malformed hosts. Only the seven directives in
+  the dropdown are allowed.
 - Hosts are **canonicalised** (trimmed, lower-cased, trailing `/` removed) and
   **deduplicated** per directive — on save and again when the policy is built.
 
@@ -89,7 +91,7 @@ vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist \
 - `HostValidatorTest` — the accept/reject/canonicalise rules and per-directive
   deduplication (the security core).
 - `DataTest` — invalid/empty JSON returning no hosts, grouping by directive,
-  skipping incomplete rows, read-side deduplication, and the default seed.
+  skipping incomplete rows, and read-side deduplication.
 
 ## What CI checks
 

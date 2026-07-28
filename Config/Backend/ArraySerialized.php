@@ -12,7 +12,6 @@ use Magento\Framework\Model\Context;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
 use Magento\Framework\Serialize\SerializerInterface;
-use Softcode\CspWhitelist\Helper\Data as DataHelper;
 use Softcode\CspWhitelist\Model\HostValidator;
 
 /**
@@ -20,13 +19,12 @@ use Softcode\CspWhitelist\Model\HostValidator;
  *
  * On save it validates and canonicalises every host and drops duplicates, so the
  * stored policy can never contain malformed, dangerous or repeated sources. An
- * invalid entry aborts the save with a message naming the offending value.
+ * invalid entry aborts the save with a message naming the offending value. An empty
+ * grid stores an empty policy — the module never seeds hosts on the admin's behalf.
  */
 class ArraySerialized extends ConfigValue
 {
     private SerializerInterface $serializer;
-
-    private DataHelper $dataHelper;
 
     private HostValidator $hostValidator;
 
@@ -36,14 +34,12 @@ class ArraySerialized extends ConfigValue
         ScopeConfigInterface $config,
         TypeListInterface $cacheTypeList,
         SerializerInterface $serializer,
-        DataHelper $dataHelper,
         HostValidator $hostValidator,
         ?AbstractResource $resource = null,
         ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->serializer = $serializer;
-        $this->dataHelper = $dataHelper;
         $this->hostValidator = $hostValidator;
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);
     }
@@ -59,11 +55,6 @@ class ArraySerialized extends ConfigValue
         $value = $this->getValue();
 
         if (is_array($value)) {
-            // An empty grid arrives as the single "__empty" placeholder row; seed the
-            // documented defaults in that case, matching the module's prior behaviour.
-            if (count($value) === 1) {
-                $value = $this->dataHelper->getDefaultValues();
-            }
             unset($value['__empty']);
 
             try {

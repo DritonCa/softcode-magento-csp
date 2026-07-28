@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 ### Security
+- **No auto-seeded default hosts.** Removed `Helper\Data::getDefaultValues()` and the
+  "seed on empty grid" behaviour in `ArraySerialized`. A security module must not
+  silently broaden the CSP with example wildcards (`*.google.com` across every
+  directive); an empty grid now stores an empty policy.
+- **Only secure schemes.** `HostValidator` now accepts `https`/`wss` and rejects
+  `http`/`ws`. A bare host (no scheme) is still allowed and follows the page scheme,
+  so this does not block plain-HTTP hosts — it only refuses to *declare* insecure ones.
 - **Strict host validation on save.** New `Model\HostValidator` (wired into
   `Config\Backend\ArraySerialized::beforeSave`) accepts only documented
   host-sources and rejects a bare `*`, wildcards on a bare TLD, non-host schemes
